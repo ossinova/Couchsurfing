@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import ButtonSignin from "./ButtonSignin";
+import ThemeToggle from "./ThemeToggle";
 import logo from "@/app/icon.png";
 import config from "@/config";
 
@@ -14,12 +15,12 @@ const links: {
   label: string;
 }[] = [
   {
-    href: "/#pricing",
-    label: "Pricing",
+    href: "/#host",
+    label: "Host",
   },
   {
-    href: "/#testimonials",
-    label: "Reviews",
+    href: "/#home",
+    label: "Home",
   },
   {
     href: "/#faq",
@@ -34,14 +35,43 @@ const cta: JSX.Element = <ButtonSignin extraStyle="btn-primary" />;
 const Header = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(true);
+  const [lastScrollY, setLastScrollY] = useState<number>(0);
 
   // setIsOpen(false) when the route changes (i.e: when the user clicks on a link on mobile)
   useEffect(() => {
     setIsOpen(false);
   }, [searchParams]);
 
+  // Handle scroll to show/hide header
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show header when at the top of the page
+      if (currentScrollY < 10) {
+        setIsVisible(true);
+      } 
+      // Hide header when scrolling down, show when scrolling up
+      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <header className="bg-base-200">
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 bg-base-200 transition-transform duration-300 shadow-md ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <nav
         className="container flex items-center justify-between px-8 py-4 mx-auto"
         aria-label="Global"
@@ -104,8 +134,11 @@ const Header = () => {
           ))}
         </div>
 
-        {/* CTA on large screens */}
-        <div className="hidden lg:flex lg:justify-end lg:flex-1">{cta}</div>
+        {/* CTA and theme toggle on large screens */}
+        <div className="hidden lg:flex lg:justify-end lg:flex-1 items-center gap-3">
+          <ThemeToggle />
+          {cta}
+        </div>
       </nav>
 
       {/* Mobile menu, show/hide based on menu state. */}
@@ -171,8 +204,14 @@ const Header = () => {
               </div>
             </div>
             <div className="divider"></div>
-            {/* Your CTA on small screens */}
-            <div className="flex flex-col">{cta}</div>
+            {/* Your CTA and theme toggle on small screens */}
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <ThemeToggle />
+                <span className="text-sm opacity-70">Theme</span>
+              </div>
+              {cta}
+            </div>
           </div>
         </div>
       </div>

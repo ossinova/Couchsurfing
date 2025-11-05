@@ -3,111 +3,46 @@ import Image from "next/image";
 import config from "@/config";
 import logo from "@/app/icon.png";
 
-// Add the Footer to the bottom of your landing page and more.
-// The support link is connected to the config.js file. If there's no config.resend.supportEmail, the link won't be displayed.
-
 const Footer = () => {
+  const socials = [
+    config.host?.instagram && { href: `https://instagram.com/${config.host.instagram}`, label: "Instagram", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10z"/><circle cx="17.5" cy="6.5" r="1.5"/><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z"/></svg>
+    )},
+    config.host?.whatsapp && { href: `https://wa.me/${(config.host.whatsapp || '').replace(/\D/g, '')}`, label: "WhatsApp", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M20.52 3.48A11.9 11.9 0 0012.06 0C5.58 0 .3 5.28.3 11.76c0 2.07.54 4.07 1.56 5.85L0 24l6.6-1.71a11.4 11.4 0 005.46 1.41h.01c6.48 0 11.76-5.28 11.76-11.76a11.7 11.7 0 00-3.31-8.46zM12.07 21.3h-.01a9.6 9.6 0 01-4.9-1.34l-.35-.21-3.92 1.02 1.05-3.83-.23-.39a9.55 9.55 0 01-1.46-5.09c0-5.29 4.31-9.6 9.6-9.6 2.57 0 4.98 1 6.79 2.8a9.6 9.6 0 012.81 6.8c0 5.29-4.31 9.6-9.6 9.6zm5.55-7.24c-.3-.15-1.77-.88-2.05-.98-.28-.11-.49-.15-.7.15-.2.3-.8.98-.98 1.18-.18.2-.36.23-.66.08-.3-.15-1.25-.46-2.39-1.47-.88-.78-1.47-1.73-1.64-2.03-.17-.3-.02-.47.13-.62.13-.13.3-.36.45-.54.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.7-1.68-.96-2.3-.25-.6-.5-.5-.7-.5-.18 0-.38-.02-.58-.02-.2 0-.53.08-.8.38-.27.3-1.06 1.03-1.06 2.51s1.09 2.9 1.25 3.1c.15.2 2.15 3.29 5.22 4.6.73.32 1.3.5 1.74.64.73.23 1.39.2 1.92.12.59-.09 1.77-.72 2.02-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/></svg>
+    )},
+    config.host?.couchsurfing && { href: config.host.couchsurfing, label: "Couchsurfing", icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10a10 10 0 100-20zm0 2a8 8 0 110 16A8 8 0 0112 4zm-1.5 5c-.83 0-1.5.67-1.5 1.5S9.67 12 10.5 12s1.5-.67 1.5-1.5S11.33 9 10.5 9zm5.5 6H8c-.55 0-1 .45-1 1s.45 1 1 1h8c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg>
+    )}
+  ].filter(Boolean) as { href: string; label: string; icon: JSX.Element }[];
+
   return (
     <footer className="bg-base-200 border-t border-base-content/10">
-      <div className="max-w-7xl mx-auto px-8 py-24">
-        <div className=" flex lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
-          <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
-            <Link
-              href="/#"
-              aria-current="page"
-              className="flex gap-2 justify-center md:justify-start items-center"
-            >
-              <Image
-                src={logo}
-                alt={`${config.appName} logo`}
-                priority={true}
-                className="w-6 h-6"
-                width={24}
-                height={24}
-              />
-              <strong className="font-extrabold tracking-tight text-base md:text-lg">
-                {config.appName}
-              </strong>
-            </Link>
+      <div className="max-w-7xl mx-auto px-8 py-12">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src={logo} alt={`${config.appName} logo`} priority={true} className="w-6 h-6" width={24} height={24} />
+            <strong className="font-extrabold tracking-tight text-base">{config.appName}</strong>
+          </Link>
 
-            <p className="mt-3 text-sm text-base-content/80">
-              {config.appDescription}
-            </p>
-            <p className="mt-3 text-sm text-base-content/60">
-              Copyright © {new Date().getFullYear()} - All rights reserved
-            </p>
+          <nav className="flex flex-wrap items-center justify-center gap-4 text-sm">
+            <Link href="#host" className="link link-hover">About Host</Link>
+            <Link href="#home" className="link link-hover">About Home</Link>
+            <Link href="#faq" className="link link-hover">FAQ</Link>
+            <Link href="/get-started" className="link link-hover">Get Started</Link>
+          </nav>
 
-            <a
-              href="https://shipfa.st/?ref=shipfast_badge"
-              title="Go to ShipFast"
-              target="_blank"
-              className="mt-4 inline-block cursor-pointer rounded bg-neutral px-2 py-1 text-sm text-neutral-content ring-1 ring-base-content/10 duration-200 hover:ring-neutral"
-            >
-              <div className="flex items-center gap-1">
-                <span className="opacity-90">Built with</span>
-                <span className="flex items-center gap-0.5 font-semibold tracking-tight">
-                  <svg
-                    className="size-5"
-                    viewBox="0 0 375 509"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M233.962 11.7151L233.954 11.7229L186.393 57.3942L186.392 57.3948C116.335 124.657 57.1377 202.349 10.9069 287.707L10.8624 287.789L10.8164 287.87C10.5281 288.38 10.3791 288.954 10.383 289.537C10.387 290.12 10.5438 290.693 10.839 291.198C11.1342 291.704 11.5582 292.125 12.0701 292.419C12.5819 292.713 13.1633 292.868 13.756 292.869H129.042H139.042V302.869V494.875V494.888C139.042 495.535 139.229 496.17 139.584 496.715L131.361 502.072L139.584 496.715C139.939 497.26 140.447 497.692 141.048 497.957C141.648 498.222 142.314 498.308 142.963 498.202C143.613 498.096 144.215 497.804 144.698 497.365L144.7 497.363L165.966 477.999L165.97 477.996C239.677 410.959 302.226 332.637 351.272 245.969L351.274 245.966L364.435 222.73L364.44 222.721L364.445 222.712C364.735 222.203 364.885 221.627 364.882 221.043C364.879 220.459 364.723 219.886 364.427 219.379C364.132 218.872 363.707 218.45 363.194 218.156C362.681 217.862 362.099 217.707 361.505 217.707H361.5H249.685H239.685V207.707V14.1248C239.685 13.47 239.492 12.8285 239.129 12.28M233.962 11.7151L239.129 12.28M233.962 11.7151C234.438 11.2571 235.04 10.9473 235.694 10.8267C236.349 10.7061 237.024 10.7805 237.635 11.0399C238.246 11.2993 238.765 11.7314 239.129 12.28M233.962 11.7151L247.465 6.75675L239.129 12.28"
-                      fill="#FFBE18"
-                      stroke="black"
-                      strokeWidth="20"
-                    />
-                  </svg>
-                  ShipFast
-                </span>
-              </div>
-            </a>
+          <div className="flex items-center gap-3">
+            {socials.map((s) => (
+              <a key={s.label} href={s.href} target="_blank" aria-label={s.label} className="btn btn-sm btn-outline btn-primary btn-square text-primary">
+                {s.icon}
+              </a>
+            ))}
           </div>
-          <div className="flex-grow flex flex-wrap justify-center -mb-10 md:mt-0 mt-10 text-center">
-            <div className="lg:w-1/3 md:w-1/2 w-full px-4">
-              <div className="footer-title font-semibold text-base-content tracking-widest text-sm md:text-left mb-3">
-                LINKS
-              </div>
+        </div>
 
-              <div className="flex flex-col justify-center items-center md:items-start gap-2 mb-10 text-sm">
-                {config.resend.supportEmail && (
-                  <a
-                    href={`mailto:${config.resend.supportEmail}`}
-                    target="_blank"
-                    className="link link-hover"
-                    aria-label="Contact Support"
-                  >
-                    Support
-                  </a>
-                )}
-                <Link href="/#pricing" className="link link-hover">
-                  Pricing
-                </Link>
-                <Link href="/blog" className="link link-hover">
-                  Blog
-                </Link>
-                <a href="/#" target="_blank" className="link link-hover">
-                  Affiliates
-                </a>
-              </div>
-            </div>
-
-            <div className="lg:w-1/3 md:w-1/2 w-full px-4">
-              <div className="footer-title font-semibold text-base-content tracking-widest text-sm md:text-left mb-3">
-                LEGAL
-              </div>
-
-              <div className="flex flex-col justify-center items-center md:items-start gap-2 mb-10 text-sm">
-                <Link href="/tos" className="link link-hover">
-                  Terms of services
-                </Link>
-                <Link href="/privacy-policy" className="link link-hover">
-                  Privacy policy
-                </Link>
-              </div>
-            </div>
-          </div>
+        <div className="mt-6 text-center md:text-left text-xs opacity-70">
+          <p>© {new Date().getFullYear()} {config.appName}. All rights reserved.</p>
         </div>
       </div>
     </footer>

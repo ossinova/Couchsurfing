@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --default;
+  themes: light --default, dark;
 }
 
 @theme {
@@ -48,12 +48,26 @@ body {
   scroll-behavior: smooth !important;
 }
 
+/* System theme preference - respect prefers-color-scheme when no data-theme is set */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-theme]) {
+    color-scheme: light;
+  }
+}
+
 progress::-webkit-progress-value {
   transition: 0.6s width ease-out;
 }
 
 .btn-gradient {
-  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82) !important;
+  /* Orange-focused gradient to match brand primary (#ff6a2d) */
+  background: linear-gradient(60deg, #ff6a2d, #ff7a2f, #ff8a32, #ff9a35, #ffaa39, #ffba3e, #ffca44, #ffda4b) !important;
   background-size: 300% 300% !important;
   animation: var(--animate-shimmer) !important;
   border: 0 !important;

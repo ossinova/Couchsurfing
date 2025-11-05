@@ -3,18 +3,101 @@ import { ConfigProps } from "./types/config";
 // DaisyUI v5 no longer exports themes directly, using fallback color
 const themes = {
   light: {
-    primary: "#3b82f6", // blue-500
-  }
+    primary: "#ff6a2d", // couchsurfing-like orange
+  },
+  autumn: {
+    primary: "#", // couchsurfing-like orange
+  },
+  dark: {
+    primary: "#636363", // c
+  },
 };
 
 const config = {
   // REQUIRED
-  appName: "ShipFast",
+  appName: "CPH-Couchsurfing",
   // REQUIRED: a short description of your app for SEO tags (can be overwritten)
   appDescription:
-    "The NextJS boilerplate with all you need to build your SaaS, AI tool, or any other web app.",
+    "Community-driven couchsurfing in Copenhagen. Meet locals, stay with hosts, and share experiences.",
   // REQUIRED (no https://, not trailing slash at the end, just the naked domain)
-  domainName: "shipfa.st",
+  
+  // Hero section
+  hero: {
+    title: "Stay with a Local in Copenhagen",
+    subtitle: "Cozy home, friendly vibes, and insider tips—right in the heart of the city.",
+    backgroundImage: "/kaktus.jpg",
+    videoId: "kRRoCKmsf2Y" // Replace with your actual YouTube video ID
+  },
+  domainName: "localhost", // update to your real domain when ready
+  
+  // Host section
+  host: {
+    houseName: 'Kaktus Towers',
+    addressLine1: 'Dybbølsbro 3',
+    addressLine2: 'Apartment 13.1',
+    city: 'Copenhagen',
+    postalCode: '1577',
+    country: 'Denmark',
+    intercom: '13.1',
+    notes: 'Close to Dybbølsbro Station. Use intercom and take elevator to 13th floor.',
+    phone: '+47 98605552',
+    nearbyTransit: {
+      trainStation: 'Dybbølsbro Station',
+      buses: ['1A', '2A', '5A', '6A'],
+      airportRoute: 'Metro M2 to Kongens Nytorg, then M4 to Havneholmen',
+    },
+    name: 'Oscar Dyremyhr',
+    birthday: '1995-05-20',
+    nationality: 'Norwegian',
+    hobbies: ['Traveling', 'Walking', 'Skiing', 'Socializing', "Photography"],
+    favorites: {
+      food: 'Thai',
+      country: 'Burma / Myanmar',
+    },
+    countriesLived: ['Norway', 'Thailand', 'USA', 'Denmark'],
+    maxGuests: 2,
+    photo: '/me.jpg',
+    // Social media
+    instagram: 'norsehorizon',
+    whatsapp: '+47 98605552',
+    couchsurfing: 'https://www.couchsurfing.com/people/oscar-dyremyhr-1',
+    // Emergency contacts
+    emergencyContacts: [
+      {
+        name: 'Oscar (Host)',
+        number: '+47 98605552',
+        description: 'Available 24/7 for emergencies'
+      },
+      {
+        name: 'Emergency Services',
+        number: '112',
+        description: 'Police, Fire, Medical'
+      }
+    ],
+  },
+  // FAQ section
+  faq: [
+    {
+      question: "What are check‑in and check‑out times?",
+      answer: "Check‑in from 15:00 when possible; check‑out by 11:00. I can store bags if schedules don't align."
+    },
+    {
+      question: "How do I get to your place?",
+      answer: "Take the metro to Dybbølsbro Station (2 min walk). From airport: Metro M2 to Kongens Nytorg, then M4 to Havneholmen. Use intercom 13.1 and take elevator to 13th floor. Close to Dybbølsbro Station. Use intercom and take elevator to 13th floor."
+    },
+    {
+      question: "Can I use the kitchen?",
+      answer: "Yes — you're welcome to cook. Please clean as you go and be mindful during quiet hours."
+    },
+    {
+      question: "What's the WiFi password?",
+      answer: "The WiFi details are provided in the WiFi section above, or scan the QR code for instant connection."
+    },
+    {
+      question: "What if I have an emergency?",
+      answer: "Call me at +47 98605552 (available 24/7) or emergency services at 112. I'm here to help!"
+    }
+  ],
   crisp: {
     // Crisp website ID. IF YOU DON'T USE CRISP: just remove this => Then add a support email in this config file (resend.supportEmail) otherwise customer support won't work.
     id: "",
@@ -79,15 +162,15 @@ const config = {
   },
   resend: {
     // REQUIRED — Email 'From' field to be used when sending magic login links
-    fromNoReply: `ShipFast <noreply@resend.shipfa.st>`,
+    fromNoReply: `CPH-Couchsurfing <noreply@cph-couchsurfing.com>`,
     // REQUIRED — Email 'From' field to be used when sending other emails, like abandoned carts, updates etc..
-    fromAdmin: `Marc at ShipFast <marc@resend.shipfa.st>`,
+    fromAdmin: `CPH-Couchsurfing Team <team@cph-couchsurfing.com>`,
     // Email shown to customer if they need support. Leave empty if not needed => if empty, set up Crisp above, otherwise you won't be able to offer customer support."
-    supportEmail: "marc.louvion@gmail.com",
+    supportEmail: "support@cph-couchsurfing.com",
   },
   colors: {
     // REQUIRED — The DaisyUI theme to use (added to the main layout.js). Leave blank for default (light & dark mode). If you use any theme other than light/dark, you need to add it in config.tailwind.js in daisyui.themes.
-    theme: "light",
+    theme: "autumn",
     // REQUIRED — This color will be reflected on the whole app outside of the document (loading bar, Chrome tabs, etc..). By default it takes the primary color from your DaisyUI theme (make sure to update your the theme name after "data-theme=")
     // OR you can just do this to use a custom color: main: "#f37055". HEX only.
     main: themes["light"]["primary"],

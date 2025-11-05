@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { JSX } from "react";
+import config from "@/config";
 
 // <FAQ> component is a lsit of <Item> component
 // Just import the FAQ & add your FAQ content to the const faqList arrayy below.
@@ -11,27 +12,7 @@ interface FAQItemProps {
   answer: JSX.Element;
 }
 
-const faqList: FAQItemProps[] = [
-  {
-    question: "What do I get exactly?",
-    answer: <div className="space-y-2 leading-relaxed">Loreum Ipseum</div>,
-  },
-  {
-    question: "Can I get a refund?",
-    answer: (
-      <p>
-        Yes! You can request a refund within 7 days of your purchase. Reach out
-        by email.
-      </p>
-    ),
-  },
-  {
-    question: "I have another question",
-    answer: (
-      <div className="space-y-2 leading-relaxed">Cool, contact us by email</div>
-    ),
-  },
-];
+const faqList: FAQItemProps[] = [];
 
 const FaqItem = ({ item }: { item: FAQItemProps }) => {
   const accordion = useRef(null);
@@ -94,6 +75,20 @@ const FaqItem = ({ item }: { item: FAQItemProps }) => {
 };
 
 const FAQ = () => {
+  const items = useMemo<FAQItemProps[]>(() => {
+    if (config.faq?.length) {
+      return config.faq.map(({ question, answer }) => ({
+        question,
+        answer: <p>{answer}</p>,
+      }));
+    }
+    return [
+      {
+        question: "What do I get exactly?",
+        answer: <div className="space-y-2 leading-relaxed">Loreum Ipseum</div>,
+      },
+    ];
+  }, []);
   return (
     <section className="bg-base-200" id="faq">
       <div className="py-24 px-8 max-w-7xl mx-auto flex flex-col md:flex-row gap-12">
@@ -105,7 +100,7 @@ const FAQ = () => {
         </div>
 
         <ul className="basis-1/2">
-          {faqList.map((item, i) => (
+          {items.map((item, i) => (
             <FaqItem key={i} item={item} />
           ))}
         </ul>
