@@ -1,6 +1,6 @@
 "use client";
 
-const ButtonAccount = () => {
+const ButtonAccount = (): null => {
 	return null;
 };
 

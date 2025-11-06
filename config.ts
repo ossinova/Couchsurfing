@@ -91,7 +91,7 @@ const config = {
     },
     {
       question: "What's the WiFi password?",
-      answer: "The WiFi details are provided in the WiFi section above, or scan the QR code for instant connection."
+      answer: "The WiFi details are provided in the [Get Started Guide](/get-started) — check the WiFi section or scan the QR code for instant connection."
     },
     {
       question: "What if I have an emergency?",

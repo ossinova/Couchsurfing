@@ -43,6 +43,16 @@ const Header = () => {
     setIsOpen(false);
   }, [searchParams]);
 
+  // Lock body scroll when menu open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [isOpen]);
+
   // Handle scroll to show/hide header
   useEffect(() => {
     const handleScroll = () => {
@@ -67,9 +77,10 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
+    <>
     <header 
       className={`fixed top-0 left-0 right-0 z-50 bg-base-200 transition-transform duration-300 shadow-md ${
-        isVisible ? "translate-y-0" : "-translate-y-full"
+        (isVisible || isOpen) ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <nav
@@ -140,11 +151,20 @@ const Header = () => {
           {cta}
         </div>
       </nav>
+    </header>
 
-      {/* Mobile menu, show/hide based on menu state. */}
-      <div className={`relative z-50 ${isOpen ? "" : "hidden"}`}>
+    {/* Mobile menu rendered outside header to avoid transform issues */}
+    {isOpen && (
+      <>
+        {/* Backdrop */}
+        <button
+          aria-label="Close menu"
+          onClick={() => setIsOpen(false)}
+          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[1px]"
+        />
+        {/* Panel */}
         <div
-          className={`fixed inset-y-0 right-0 z-10 w-full px-8 py-4 overflow-y-auto bg-base-200 sm:max-w-sm sm:ring-1 sm:ring-neutral/10 transform origin-right transition ease-in-out duration-300`}
+          className="fixed inset-y-0 right-0 z-50 w-full px-8 py-4 overflow-y-auto bg-base-200 sm:max-w-sm sm:ring-1 sm:ring-neutral/10 transform origin-right transition ease-in-out duration-300"
         >
           {/* Your logo/name on small screens */}
           <div className="flex items-center justify-between">
@@ -214,8 +234,9 @@ const Header = () => {
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </>
+    )}
+    </>
   );
 };
 
